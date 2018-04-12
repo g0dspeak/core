@@ -22,11 +22,11 @@
 namespace Test;
 
 use OC\AvatarManager;
-use OCP\Files\Folder;
+use OC\User\User;
 use OCP\Files\IRootFolder;
+use OCP\Files\Storage\IStorage;
 use OCP\IL10N;
 use OCP\ILogger;
-use OCP\IUser;
 use OCP\IUserManager;
 use Test\Traits\MountProviderTrait;
 
@@ -60,7 +60,7 @@ class AvatarManagerTest extends TestCase {
 		$this->registerMount('valid-user', $this->storage, '/valid-user/');
 
 		$this->avatarManager = $this->getMockBuilder(AvatarManager::class)
-			->setMethods(['getAvatarFolder'])
+			->setMethods(['getAvatarStorage'])
 			->setConstructorArgs([$this->userManager,
 				$this->rootFolder,
 				$l,
@@ -77,11 +77,11 @@ class AvatarManagerTest extends TestCase {
 	}
 
 	public function testGetAvatarValidUser() {
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(User::class);
 		$this->userManager->expects($this->once())->method('get')->willReturn($user);
 
-		$folder = $this->createMock(Folder::class);
-		$this->avatarManager->expects($this->once())->method('getAvatarFolder')->willReturn($folder);
+		$storage = $this->createMock(IStorage::class);
+		$this->avatarManager->expects($this->once())->method('getAvatarStorage')->willReturn($storage);
 
 		$avatar = $this->avatarManager->getAvatar('valid-user');
 
@@ -89,35 +89,17 @@ class AvatarManagerTest extends TestCase {
 		$this->assertFalse($this->storage->file_exists('files'));
 	}
 
-	/**
-	 * @dataProvider providesUserIds
-	 */
-	public function testPathBuilding($expectedPath, $userId) {
-		$path = $this->invokePrivate($this->avatarManager, 'buildAvatarPath', [$userId]);
-		$this->assertEquals($expectedPath, \implode('/', $path));
-	}
-
-	public function providesUserIds() {
-		return [
-			['21/23/2f297a57a5a743894a0e4a801fc3', 'admin'],
-			['c4/ca/4238a0b923820dcc509a6f75849b', '1'],
-			['f9/5b/70fdc3088560732a5ac135644506', '{'],
-			['d4/1d/8cd98f00b204e9800998ecf8427e', ''],
-		];
-	}
-
 	public function testGetAvatarValidUserDifferentCasing() {
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(User::class);
 		$this->userManager->expects($this->once())
 			->method('get')
 			->with('vaLid-USER')
 			->willReturn($user);
 
-		$folder = $this->createMock(Folder::class);
+		$storage = $this->createMock(IStorage::class);
 		$this->avatarManager->expects($this->once())
-			->method('getAvatarFolder')
-			->with($user)
-			->willReturn($folder);
+			->method('getAvatarStorage')
+			->willReturn($storage);
 
 		$avatar = $this->avatarManager->getAvatar('vaLid-USER');
 		$this->assertInstanceOf('\OCP\IAvatar', $avatar);
