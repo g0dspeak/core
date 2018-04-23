@@ -357,8 +357,8 @@ class Log implements ILogger {
 		];
 
 		// note: regardless of log level we let listeners receive messages
-		$this->inEvent = true;
 		if (!$skipEvents) {
+			$this->inEvent = true;
 			$event = new GenericEvent(null);
 			$event->setArguments($eventArgs);
 			$this->eventDispatcher->dispatch('log.beforewrite', $event);
@@ -378,9 +378,12 @@ class Log implements ILogger {
 		if (!$skipEvents) {
 			$event = new GenericEvent(null);
 			$event->setArguments($eventArgs);
-			$this->eventDispatcher->dispatch('log.afterwrite', $event);
+			try {
+				$this->eventDispatcher->dispatch('log.afterwrite', $event);
+			} finally {
+				$this->inEvent = false;
+			}
 		}
-		$this->inEvent = false;
 	}
 
 	/**
