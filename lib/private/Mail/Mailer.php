@@ -100,21 +100,21 @@ class Mailer implements IMailer {
 
 		$allRecipients = [];
 		if (!empty($message->getTo())) {
-			$allRecipients = array_merge($allRecipients, $message->getTo());
+			$allRecipients = \array_merge($allRecipients, $message->getTo());
 		}
 		if (!empty($message->getCc())) {
-			$allRecipients = array_merge($allRecipients, $message->getCc());
+			$allRecipients = \array_merge($allRecipients, $message->getCc());
 		}
 		if (!empty($message->getBcc())) {
-			$allRecipients = array_merge($allRecipients, $message->getBcc());
+			$allRecipients = \array_merge($allRecipients, $message->getBcc());
 		}
 
 		// Debugging logging
 		$logMessage = 'Sent mail from "{from}" to "{recipients}" with subject "{subject}"';
 		$this->logger->debug($logMessage, [
 			'app' => 'core',
-			'from' => json_encode($message->getFrom()),
-			'recipients' => json_encode($allRecipients),
+			'from' => \json_encode($message->getFrom()),
+			'recipients' => \json_encode($allRecipients),
 			'subject' => $message->getSubject()
 		]);
 
