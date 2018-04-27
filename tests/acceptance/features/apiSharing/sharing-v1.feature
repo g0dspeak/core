@@ -114,7 +114,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -144,7 +143,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -174,7 +172,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -204,7 +201,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -358,7 +354,6 @@ Feature: sharing
 			| storage                | A_NUMBER           |
 			| mail_send              | 0                  |
 			| uid_owner              | user0              |
-			| storage_id             | home::user0        |
 			| file_parent            | A_NUMBER           |
 			| share_with_displayname | user1              |
 			| displayname_owner      | user0              |
@@ -389,7 +384,6 @@ Feature: sharing
 			| storage           | A_NUMBER       |
 			| mail_send         | 0              |
 			| uid_owner         | user0          |
-			| storage_id        | home::user0    |
 			| file_parent       | A_NUMBER       |
 			| displayname_owner | user0          |
 			| mimetype          | text/plain     |
@@ -1272,7 +1266,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user1                |
-			| storage_id        | home::user1          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user1                |
 			| mimetype          | httpd/unix-directory |
