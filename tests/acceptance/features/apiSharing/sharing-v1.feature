@@ -909,12 +909,14 @@ Feature: sharing
 
 	Scenario: Emptying trashbin
 		Given user "user0" has been created
+		And a new browser session for "user0" has been started
 		And user "user0" has deleted file "/textfile0.txt"
 		When user "user0" empties the trashbin using the API
 		Then the HTTP status code should be "200"
 
 	Scenario: orphaned shares
 		Given user "user0" has been created
+		And a new browser session for "user0" has been started
 		And user "user1" has been created
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
