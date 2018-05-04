@@ -526,11 +526,11 @@ class ObjectStoreStorage extends Common {
 	/**
 	 * @inheritdoc
 	 */
-	public function getDirectDownload($path, $versionId = null) {
-		$path = $this->normalizePath($path);
-		$stat = $this->stat($path);
+	public function getDirectDownload($internalPath, $versionId = null) {
+		$internalPath = $this->normalizePath($internalPath);
+		$stat = $this->stat($internalPath);
 
-		$url = $this->objectStore->getDirectDownload($this->getURN($stat['fileid']), $versionId, \basename($path));
+		$url = $this->objectStore->getDirectDownload($this->getURN($stat['fileid']), $versionId, \basename($internalPath));
 		if ($url === null) {
 			return [];
 		}

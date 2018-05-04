@@ -472,6 +472,19 @@ class Jail extends Wrapper {
 	}
 
 	/**
+	 * A custom storage implementation can return an url for direct download of a give file.
+	 *
+	 * For now the returned array can hold the parameter url - in future more attributes might follow.
+	 *
+	 * @param string $path
+	 * @param string $versionId
+	 * @return array
+	 */
+	public function getDirectDownload($path, $versionId = null) {
+		return $this->getWrapperStorage()->getDirectDownload($this->getSourcePath($path), $versionId);
+	}
+
+	/**
 	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
