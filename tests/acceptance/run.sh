@@ -240,6 +240,25 @@ then
 	SELENIUM_PORT=4445
 fi
 
+# Check if we can rely on a local ./occ command or if we are testing
+# a remote instance (e.g. inside docker).
+# If we have a remote instance we cannot enable the testing app and
+# we have to hope it is enabled already, by other ways
+if [ "$REMOTE_ONLY" = false ]
+then
+	# Enable testing app
+	PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
+	if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
+	then
+		$OCC app:enable testing || { echo "Unable to enable testing app" >&2; exit 1; }
+		TESTING_ENABLED_BY_SCRIPT=true;
+	else
+		TESTING_ENABLED_BY_SCRIPT=false;
+	fi
+else
+	TESTING_ENABLED_BY_SCRIPT=false;
+fi
+
 # The endpoint to use to do occ commands via the testing app
 OCC_URL="$TEST_SERVER_URL/ocs/v2.php/apps/testing/api/v1/occ"
 
@@ -341,25 +360,6 @@ $OCC config:system:set sharing.federation.allowHttpFallback --type boolean --val
 # Enable external storage app
 $OCC config:app:set core enable_external_storage --value=yes
 $OCC config:system:set files_external_allow_create_new_local --value=true
-
-# Check if we can rely on a local ./occ command or if we are testing
-# a remote instance (e.g. inside docker).
-# If we have a remote instance we cannot enable the testing app and
-# we have to hope it is enabled already, by other ways
-if [ "$REMOTE_ONLY" = false ]
-then
-	# Enable testing app
-	PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
-	if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
-	then
-		$OCC app:enable testing || { echo "Unable to enable testing app" >&2; exit 1; }
-		TESTING_ENABLED_BY_SCRIPT=true;
-	else
-		TESTING_ENABLED_BY_SCRIPT=false;
-	fi
-else
-	TESTING_ENABLED_BY_SCRIPT=false;
-fi
 
 # Only make local storage when running API tests.
 # The local storage folder cannot be deleted by an ordinary user.
