@@ -315,9 +315,9 @@ PREVIOUS_SKELETON_DIR=$REMOTE_OCC_STDOUT
 # it is used for file comparisons in various tests
 if [ "$RUNNING_API_TESTS" = true ]
 then
-	export SRC_SKELETON_DIR=$(pwd)/skeleton
+	export SRC_SKELETON_DIR="$SCRIPT_PATH/skeleton"
 else
-	export SRC_SKELETON_DIR=$(pwd)/webUISkeleton
+	export SRC_SKELETON_DIR="$SCRIPT_PATH/webUISkeleton"
 fi
 
 # $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
@@ -460,7 +460,7 @@ fi
 
 export IPV4_URL
 export IPV6_URL
-export FILES_FOR_UPLOAD="$(pwd)/filesForUpload/"
+export FILES_FOR_UPLOAD="$SCRIPT_PATH/filesForUpload/"
 
 if [ -z "$BEHAT_SUITE" ] && [ -z "$BEHAT_FEATURE" ]
 then
