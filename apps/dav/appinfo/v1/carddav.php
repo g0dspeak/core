@@ -45,8 +45,12 @@ $principalBackend = new Principal(
 	\OC::$server->getGroupManager(),
 	'principals/'
 );
+$groupPrincipalBackend = new \OCA\DAV\DAV\GroupPrincipalBackend(
+	\OC::$server->getGroupManager(),
+	'principals/'
+);
 $db = \OC::$server->getDatabaseConnection();
-$cardDavBackend = new CardDavBackend($db, $principalBackend, null, true);
+$cardDavBackend = new CardDavBackend($db, $principalBackend, $groupPrincipalBackend, true);
 
 $debugging = \OC::$server->getConfig()->getSystemValue('debug', false);
 

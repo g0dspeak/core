@@ -29,6 +29,7 @@ use InvalidArgumentException;
 use OCA\DAV\CardDAV\AddressBook;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use Sabre\DAV\PropPatch;
@@ -50,6 +51,9 @@ class CardDavBackendTest extends TestCase {
 
 	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
 	private $principal;
+
+	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
+	private $groupPrincipal;
 
 	/** @var  IDBConnection */
 	private $db;
@@ -79,9 +83,11 @@ class CardDavBackendTest extends TestCase {
 			->withAnyParameters()
 			->willReturn([self::UNIT_TEST_GROUP]);
 
+		$this->groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
+
 		$this->db = \OC::$server->getDatabaseConnection();
 
-		$this->backend = new CardDavBackend($this->db, $this->principal, null);
+		$this->backend = new CardDavBackend($this->db, $this->principal, $this->groupPrincipal, null);
 
 		// start every test with a empty cards_properties and cards table
 		$query = $this->db->getQueryBuilder();
