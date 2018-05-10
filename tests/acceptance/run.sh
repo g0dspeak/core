@@ -509,10 +509,16 @@ then
 	PASSED=true
 	SOME_SCENARIO_RERUN=false
 	FAILED_SCENARIOS=`awk '/Failed scenarios:/',0 $TEST_LOG_FILE | grep feature`
-	for FEATURE in $FAILED_SCENARIOS
+	for FEATURE_COLORED in $FAILED_SCENARIOS
 		do
 			SOME_SCENARIO_RERUN=true
-			echo "Rerun failed tests: $FEATURE"
+			# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
+			# Strip them out so we can pass just the ordinary feature details to Behat.
+			# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
+			# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
+			# for ideas.
+			FEATURE=$(echo "$FEATURE_COLORED" | sed "s/\x1b[^m]*m//g")
+			echo "Rerun failed scenario: $FEATURE"
 			$BEHAT --colors --strict -c $BEHAT_YML -f junit -f pretty $BEHAT_SUITE_OPTION --tags $BEHAT_FILTER_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 			BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 			if [ $BEHAT_EXIT_STATUS -ne 0 ]
