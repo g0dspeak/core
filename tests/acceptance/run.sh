@@ -491,7 +491,7 @@ else
 	echo "Running $SUITE_FEATURE_TEXT tests tagged $BEHAT_FILTER_TAGS on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM" | tee $TEST_LOG_FILE
 fi
 
-$BEHAT --strict -c $BEHAT_YML -f junit -f pretty $BEHAT_SUITE_OPTION --tags $BEHAT_FILTER_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
+$BEHAT --colors --strict -c $BEHAT_YML -f junit -f pretty $BEHAT_SUITE_OPTION --tags $BEHAT_FILTER_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 
 BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -513,7 +513,7 @@ then
 		do
 			SOME_SCENARIO_RERUN=true
 			echo "Rerun failed tests: $FEATURE"
-			$BEHAT --strict -c $BEHAT_YML -f junit -f pretty $BEHAT_SUITE_OPTION --tags $BEHAT_FILTER_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
+			$BEHAT --colors --strict -c $BEHAT_YML -f junit -f pretty $BEHAT_SUITE_OPTION --tags $BEHAT_FILTER_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 			BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 			if [ $BEHAT_EXIT_STATUS -ne 0 ]
 			then
